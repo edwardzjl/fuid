@@ -9,14 +9,14 @@ import (
 )
 
 type UUID struct {
-	value uuid.UUID
+	Content uuid.UUID
 }
 
 var Nil = UUID{uuid.Nil}
 
 func New() UUID {
 	value := uuid.New()
-	return UUID{value: value}
+	return UUID{Content: value}
 }
 
 func Parse(raw string) (UUID, error) {
@@ -28,7 +28,7 @@ func Parse(raw string) (UUID, error) {
 	if err != nil {
 		return Nil, err
 	}
-	return UUID{value: value}, nil
+	return UUID{Content: value}, nil
 }
 
 func MustParse(s string) UUID {
@@ -40,7 +40,7 @@ func MustParse(s string) UUID {
 }
 
 func (fid UUID) String() string {
-	uuidStr := fid.value.String()
+	uuidStr := fid.Content.String()
 	res, err := friendlyid.Encode(uuidStr)
 	if err != nil {
 		return ""
@@ -66,21 +66,21 @@ func (fid *UUID) UnmarshalJSON(data []byte) error {
 }
 
 func (fid UUID) Value() (driver.Value, error) {
-	return fid.value.Value()
+	return fid.Content.Value()
 }
 
 func (fid *UUID) Scan(src interface{}) error {
 	var value uuid.UUID
-	err := fid.value.Scan(src)
+	err := fid.Content.Scan(src)
 	if err != nil {
 		return err
 	}
-	fid = &UUID{value: value}
+	fid = &UUID{Content: value}
 	return nil
 }
 
 // URN returns the RFC 2141 URN form of uuid,
 // urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx,  or "" if uuid is invalid.
 func (fid UUID) URN() string {
-	return fid.value.URN()
+	return fid.Content.URN()
 }

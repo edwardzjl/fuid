@@ -41,7 +41,7 @@ func TestUnmarshalJson(t *testing.T) {
 
 func TestValue(t *testing.T) {
 	u := uuid.New()
-	fid := UUID{value: u}
+	fid := UUID{Content: u}
 	expected, _ := u.Value()
 	actual, _ := fid.Value()
 	assert.Equal(t, expected, actual)
